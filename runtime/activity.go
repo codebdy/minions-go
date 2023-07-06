@@ -28,32 +28,44 @@ func (j *ActivityJointers) GetInput(name string) *Jointer {
 	return nil
 }
 
-type BaseActivity[T any] struct {
+type BaseActivity[Config any] struct {
 	Id       string
 	Jointers *ActivityJointers
 	Meta     *dsl.ActivityDefine
 }
 
+type Activity[Config any] interface {
+	GetBaseActivity() *BaseActivity[Config]
+}
+
+func NewActivity[Config any, T Activity[Config]](meta *dsl.ActivityDefine) *T {
+	var activity T
+	activity.GetBaseActivity().Init(meta)
+	return &activity
+}
+
 func (a BaseActivity[T]) Init(meta *dsl.ActivityDefine) {
 	a.Meta = meta
 	a.Id = meta.Id
+
+	//构建Jointers
 }
 
-func (a BaseActivity[T]) Next(inputValue interface{}, outputName string) {
+func (b BaseActivity[Config]) Next(inputValue interface{}, outputName string) {
 	if outputName == "" {
 		outputName = "output"
 	}
-	nextJointer := a.Jointers.GetOutput(outputName)
+	nextJointer := b.Jointers.GetOutput(outputName)
 	if nextJointer != nil {
 		nextJointer.Push(inputValue)
 	}
 }
 
-func (d BaseActivity[T]) GetConfig() T {
-	var config T
+func (b BaseActivity[Config]) GetConfig() Config {
+	var config Config
 
-	if d.Meta.Config != nil {
-		mapstructure.Decode(d.Meta.Config, &config)
+	if b.Meta.Config != nil {
+		mapstructure.Decode(b.Meta.Config, &config)
 	}
 	return config
 }
