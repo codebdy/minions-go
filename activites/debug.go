@@ -10,22 +10,28 @@ type DebugConfig struct {
 	Tip    string `json:"tip"`
 	Closed bool   `json:"closed"`
 }
-type DeubugActivity struct {
+type DebugActivity struct {
 	BaseActivity runtime.BaseActivity[DebugConfig]
 }
+
+// func NewDebug() *DebugActivity {
+// 	var debug DebugActivity
+
+// 	return &debug
+// }
 
 func init() {
 	runtime.RegisterActivity(
 		"debug",
-		runtime.NewActivity[DebugConfig, DeubugActivity],
+		DebugActivity{},
 	)
 }
 
-func (d DeubugActivity) GetBaseActivity() *runtime.BaseActivity[DebugConfig] {
-	return &d.BaseActivity
-}
+// func (d DeubugActivity) GetBaseActivity() *runtime.BaseActivity[DebugConfig] {
+// 	return &d.BaseActivity
+// }
 
-func (d DeubugActivity) Input(inputValue interface{}) {
+func (d DebugActivity) Input(inputValue interface{}) {
 	config := d.BaseActivity.GetConfig()
 	if !config.Closed {
 		tip := "Debug"

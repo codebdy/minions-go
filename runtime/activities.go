@@ -1,16 +1,16 @@
 package runtime
 
 import (
-	"sync"
+	"reflect"
 
 	"github.com/codebdy/minions-go/dsl"
 )
 
-var activitiesMap sync.Map
+var activitiesMap map[string]reflect.Type
 
 //func RegisterActivity[Config any, T Activity[Config]](name string, factory func(meta *dsl.ActivityDefine) *T) {
-func RegisterActivity(name string, factory interface{}) {
-	activitiesMap.Store(name, factory)
+func RegisterActivity(name string, activity interface{}) {
+	activitiesMap[name] = reflect.TypeOf(activity)
 }
 
 func makeActivity(meta dsl.ActivityDefine) {

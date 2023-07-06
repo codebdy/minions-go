@@ -38,17 +38,16 @@ type Activity[Config any] interface {
 	GetBaseActivity() *BaseActivity[Config]
 }
 
-func NewActivity[Config any, T Activity[Config]](meta *dsl.ActivityDefine) *T {
-	var activity T
-	activity.GetBaseActivity().Init(meta)
-	return &activity
-}
+// func NewActivity[Config any, T Activity[Config]](meta *dsl.ActivityDefine) *T {
+// 	var activity T
+// 	activity.GetBaseActivity().Init(meta)
+// 	return &activity
+// }
 
 func (a BaseActivity[T]) Init(meta *dsl.ActivityDefine) {
 	a.Meta = meta
 	a.Id = meta.Id
-
-	//构建Jointers
+	a.Jointers = &ActivityJointers{}
 }
 
 func (b BaseActivity[Config]) Next(inputValue interface{}, outputName string) {
