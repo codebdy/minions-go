@@ -1,5 +1,10 @@
 package runtime
 
+import (
+	"github.com/codebdy/minions-go/dsl"
+	"github.com/mitchellh/mapstructure"
+)
+
 type ActivityJointers struct {
 	inputs  []*Jointer
 	outputs []*Jointer
@@ -23,13 +28,18 @@ func (j *ActivityJointers) GetInput(name string) *Jointer {
 	return nil
 }
 
-type AbstractActivity struct {
+type BaseActivity[T any] struct {
 	Id       string
 	Jointers *ActivityJointers
-	Config   map[string]interface{}
+	Meta     *dsl.ActivityDefine
 }
 
-func (a *AbstractActivity) Next(inputValue interface{}, outputName string) {
+func (a BaseActivity[T]) Init(meta *dsl.ActivityDefine) {
+	a.Meta = meta
+	a.Id = meta.Id
+}
+
+func (a BaseActivity[T]) Next(inputValue interface{}, outputName string) {
 	if outputName == "" {
 		outputName = "output"
 	}
@@ -37,4 +47,13 @@ func (a *AbstractActivity) Next(inputValue interface{}, outputName string) {
 	if nextJointer != nil {
 		nextJointer.Push(inputValue)
 	}
+}
+
+func (d BaseActivity[T]) GetConfig() T {
+	var config T
+
+	if d.Meta.Config != nil {
+		mapstructure.Decode(d.Meta.Config, &config)
+	}
+	return config
 }
