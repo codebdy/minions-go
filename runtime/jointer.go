@@ -1,4 +1,4 @@
 package runtime
 
-type Jointer interface {
+type Jointer struct {
 }
