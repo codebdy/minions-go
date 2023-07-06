@@ -14,12 +14,6 @@ type DebugActivity struct {
 	BaseActivity runtime.BaseActivity[DebugConfig]
 }
 
-// func NewDebug() *DebugActivity {
-// 	var debug DebugActivity
-
-// 	return &debug
-// }
-
 func init() {
 	runtime.RegisterActivity(
 		"debug",
@@ -27,24 +21,17 @@ func init() {
 	)
 }
 
-// func (d DeubugActivity) GetBaseActivity() *runtime.BaseActivity[DebugConfig] {
-// 	return &d.BaseActivity
-// }
-
-func (d DebugActivity) Input(inputValue interface{}) {
+func (d DebugActivity) Input(inputValue any) {
 	config := d.BaseActivity.GetConfig()
 	if !config.Closed {
 		tip := "Debug"
 		if config.Tip != "" {
 			tip = config.Tip
 		}
-
 		text := ""
-
 		if inputValue != nil {
 			text = inputValue.(string)
 		}
-
 		fmt.Print("🪲" + tip + ":" + text)
 	}
 }
