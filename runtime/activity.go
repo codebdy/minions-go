@@ -34,9 +34,9 @@ type BaseActivity[Config any] struct {
 	Meta     *dsl.ActivityDefine
 }
 
-type Activity[Config any] interface {
-	GetBaseActivity() *BaseActivity[Config]
-}
+// type Activity[Config any] interface {
+// 	GetBaseActivity() *BaseActivity[Config]
+// }
 
 // func NewActivity[Config any, T Activity[Config]](meta *dsl.ActivityDefine) *T {
 // 	var activity T
