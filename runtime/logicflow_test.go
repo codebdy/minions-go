@@ -9,6 +9,8 @@ import (
 
 var testInputValue any
 
+var inited bool
+
 type TestActivity struct {
 	BaseActivity BaseActivity[any]
 }
@@ -22,6 +24,10 @@ func init() {
 
 func (t TestActivity) Input(inputValue any) {
 	testInputValue = inputValue
+}
+
+func (t TestActivity) Init() {
+	inited = true
 }
 
 func TestNewLogicflow(t *testing.T) {
@@ -66,7 +72,11 @@ func TestNewLogicflow(t *testing.T) {
 	logicFolow.Jointers.GetInput("input1").Push("From Test", context.Background())
 
 	if testInputValue != "From Test" {
-		t.Error("Cant pass input value")
+		t.Error("Can not pass input value")
+	}
+
+	if !inited {
+		t.Error("Init is not invoked")
 	}
 
 }

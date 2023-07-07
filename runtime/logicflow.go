@@ -80,6 +80,14 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 				v.Jointers.inputs = append(v.Jointers.inputs, &Jointer{Id: input.Id, Name: input.Name})
 			}
 
+			//调用具体活动的初始化
+			m := activityValue.MethodByName("Init")
+			if m.IsValid() {
+				mt := m.Type()
+				inputs := make([]reflect.Value, mt.NumIn())
+				m.Call(inputs)
+			}
+
 			for i := range v.Jointers.inputs {
 				input := v.Jointers.inputs[i]
 
