@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "name": "Launch",
+          "type": "go",
+          "request": "launch",
+          "mode": "auto",
+          "program": "D:/lowcode/minions-go/main.go",  //调试程序的路径（绝对路径） ${fileDirname} 调试当前文件所在目录下的所有文件
+          "env": {},
+          "args": []
+        }
+  ]
+}

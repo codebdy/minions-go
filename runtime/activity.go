@@ -65,14 +65,14 @@ type BaseActivity[Config any] struct {
 // 	return &activity
 // }
 
-func (a BaseActivity[T]) Init(meta *dsl.ActivityDefine, ctx context.Context) {
-	a.Meta = meta
-	a.Id = meta.Id
-	a.Jointers = &ActivityJointers{}
-	a.ctx = ctx
+func (b *BaseActivity[T]) Init(meta *dsl.ActivityDefine, ctx context.Context) {
+	b.Meta = meta
+	b.Id = meta.Id
+	b.Jointers = &ActivityJointers{}
+	b.ctx = ctx
 }
 
-func (b BaseActivity[Config]) Next(inputValue interface{}, outputName string) {
+func (b *BaseActivity[Config]) Next(inputValue interface{}, outputName string) {
 	if outputName == "" {
 		outputName = "output"
 	}
@@ -82,7 +82,7 @@ func (b BaseActivity[Config]) Next(inputValue interface{}, outputName string) {
 	}
 }
 
-func (b BaseActivity[Config]) GetConfig() Config {
+func (b *BaseActivity[Config]) GetConfig() Config {
 	var config Config
 
 	if b.Meta.Config != nil {
