@@ -52,7 +52,7 @@ type BaseActivity[Config any] struct {
 	Id       string
 	Jointers *ActivityJointers
 	Meta     *dsl.ActivityDefine
-	ctx      context.Context
+	Ctx      context.Context
 }
 
 // type Activity[Config any] interface {
@@ -69,7 +69,7 @@ func (b *BaseActivity[T]) Init(meta *dsl.ActivityDefine, ctx context.Context) {
 	b.Meta = meta
 	b.Id = meta.Id
 	b.Jointers = &ActivityJointers{}
-	b.ctx = ctx
+	b.Ctx = ctx
 }
 
 func (b *BaseActivity[Config]) Next(inputValue interface{}, outputName string) {
@@ -78,7 +78,7 @@ func (b *BaseActivity[Config]) Next(inputValue interface{}, outputName string) {
 	}
 	nextJointer := b.Jointers.GetOutput(outputName)
 	if nextJointer != nil {
-		nextJointer.Push(inputValue, b.ctx)
+		nextJointer.Push(inputValue, b.Ctx)
 	}
 }
 

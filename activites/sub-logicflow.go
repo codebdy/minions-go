@@ -1,12 +1,12 @@
 package activites
 
 import (
-	"github.com/codebdy/minions-go/dsl"
+	minions "github.com/codebdy/minions-go"
 	"github.com/codebdy/minions-go/runtime"
 )
 
 type SubLogicFlowConfig struct {
-	metas dsl.LogicFlowDefine
+	subLogicFlowId string
 }
 
 type SubLogicFlowActivity struct {
@@ -22,5 +22,8 @@ func init() {
 
 //该方法如果存在，会通过反射被自动调用
 func (s SubLogicFlowActivity) Init() {
+	metas := (&s.BaseActivity).Ctx.Value(minions.CONTEXT_KEY_SUBMETAS)
+	if metas != nil {
 
+	}
 }
