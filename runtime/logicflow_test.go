@@ -2,11 +2,12 @@ package runtime
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/codebdy/minions-go/dsl"
 )
+
+var testInputValue any
 
 type TestActivity struct {
 	BaseActivity BaseActivity[any]
@@ -20,7 +21,7 @@ func init() {
 }
 
 func (t TestActivity) Input(inputValue any) {
-	fmt.Println("Test Input ", inputValue)
+	testInputValue = inputValue
 }
 
 func TestNewLogicflow(t *testing.T) {
@@ -63,4 +64,9 @@ func TestNewLogicflow(t *testing.T) {
 	logicFolow := NewLogicflow(logicFlowMetas, context.Background())
 
 	logicFolow.Jointers.GetInput("input1").Push("From Test", context.Background())
+
+	if testInputValue != "From Test" {
+		t.Error("Cant pass input value")
+	}
+
 }
