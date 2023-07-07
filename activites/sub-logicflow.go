@@ -1,10 +1,12 @@
 package activites
 
-import "github.com/codebdy/minions-go/runtime"
+import (
+	"github.com/codebdy/minions-go/dsl"
+	"github.com/codebdy/minions-go/runtime"
+)
 
 type SubLogicFlowConfig struct {
-	Tip    string `json:"tip"`
-	Closed bool   `json:"closed"`
+	metas dsl.LogicFlowDefine
 }
 
 type SubLogicFlowActivity struct {
@@ -13,7 +15,7 @@ type SubLogicFlowActivity struct {
 
 func init() {
 	runtime.RegisterActivity(
-		"debug",
+		"subLogicFlow",
 		SubLogicFlowActivity{},
 	)
 }
