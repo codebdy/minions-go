@@ -1,6 +1,8 @@
 package runtime
 
-import "context"
+import (
+	"context"
+)
 
 type InputHandler = func(inputValue any, ctx context.Context)
 

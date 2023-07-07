@@ -149,7 +149,7 @@ func (l *LogicFlow) contructLines() {
 		if targetJointer == nil && lineMeta.Target.PortId != "" {
 			targetJointer = l.geTargetJointerByPortRef(lineMeta.Target)
 		}
-		if sourceJointer == nil {
+		if targetJointer == nil {
 			panic("Can find target jointer")
 		}
 
