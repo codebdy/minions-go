@@ -130,5 +130,55 @@ func (l *LogicFlow) constructActivities() {
 
 //连接一个图的所有节点，把所有的jointer连起来
 func (l *LogicFlow) contructLines() {
+	for _, lineMeta := range l.flowMeta.Lines {
+		//先判断是否连接本编排的input
+		sourceJointer := l.Jointers.GetInputById(lineMeta.Source.NodeId)
 
+		//如果不是，连接Source activity的output
+		if sourceJointer == nil && lineMeta.Source.PortId != "" {
+			sourceJointer = l.getSourceJointerByPortRef(lineMeta.Source)
+		}
+		if sourceJointer == nil {
+			panic("Can find source jointer")
+		}
+
+		//先判断是否连接本编排的output
+		targetJointer := l.Jointers.GetOutputById(lineMeta.Target.NodeId)
+
+		//如果不是，连接Targe activity的Input
+		if targetJointer == nil && lineMeta.Target.PortId != "" {
+			targetJointer = l.geTargetJointerByPortRef(lineMeta.Target)
+		}
+		if sourceJointer == nil {
+			panic("Can find target jointer")
+		}
+
+		sourceJointer.Connect(targetJointer.Push)
+	}
+}
+func (l *LogicFlow) geTargetJointerByPortRef(portRef dsl.PortRef) *Jointer {
+	targetActivity := l.getActivityById(portRef.NodeId)
+	if targetActivity != nil {
+		return targetActivity.Jointers.GetInputById(portRef.PortId)
+	}
+	return nil
+}
+
+func (l *LogicFlow) getSourceJointerByPortRef(portRef dsl.PortRef) *Jointer {
+	sourceActivity := l.getActivityById(portRef.NodeId)
+	if sourceActivity != nil {
+		return sourceActivity.Jointers.GetOutputById(portRef.PortId)
+	}
+	return nil
+}
+
+func (l *LogicFlow) getActivityById(id string) *BaseActivity[any] {
+	for i := range l.baseActivites {
+		activity := l.baseActivites[i]
+		if activity.Id == id {
+			return activity
+		}
+	}
+
+	return nil
 }

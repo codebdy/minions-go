@@ -30,6 +30,24 @@ func (j *ActivityJointers) GetInput(name string) *Jointer {
 	return nil
 }
 
+func (j *ActivityJointers) GetOutputById(id string) *Jointer {
+	for _, jointer := range j.outputs {
+		if jointer.Id == id {
+			return jointer
+		}
+	}
+	return nil
+}
+
+func (j *ActivityJointers) GetInputById(id string) *Jointer {
+	for _, jointer := range j.inputs {
+		if jointer.Id == id {
+			return jointer
+		}
+	}
+	return nil
+}
+
 type BaseActivity[Config any] struct {
 	Id       string
 	Jointers *ActivityJointers

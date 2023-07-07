@@ -1,7 +1,7 @@
 package dsl
 
 type LineDefine struct {
-	Id     string     `json:"id"`
-	Source PortDefine `json:"source"`
-	Target PortDefine `json:"target"`
+	Id     string  `json:"id"`
+	Source PortRef `json:"source"`
+	Target PortRef `json:"target"`
 }
