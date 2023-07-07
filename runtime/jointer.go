@@ -1,6 +1,8 @@
 package runtime
 
-type InputHandler = func(inputValue interface{})
+import "context"
+
+type InputHandler = func(inputValue any, ctx context.Context)
 
 type Jointer struct {
 	Id      string
@@ -8,9 +10,9 @@ type Jointer struct {
 	outlets []InputHandler
 }
 
-func (j *Jointer) Push(inputValue interface{}) {
+func (j *Jointer) Push(inputValue any, ctx context.Context) {
 	for _, outputHandler := range j.outlets {
-		outputHandler(inputValue)
+		outputHandler(inputValue, ctx)
 	}
 }
 
