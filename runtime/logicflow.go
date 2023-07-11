@@ -48,7 +48,7 @@ func (l *LogicFlow) constructActivities() {
 			}
 			//end 只有一个端口，所以name可以跟meta name一样
 			l.Jointers.outputs = append(l.Jointers.outputs, &Jointer{Id: activityMeta.Id, Name: name})
-		case dsl.ACTIVITY_TYPE_ACTIVITY, dsl.ACTIVITY_TYPE_LOGICFLOWACTIVITY:
+		case dsl.ACTIVITY_TYPE_ACTIVITY, dsl.ACTIVITY_TYPE_LOGICFLOWACTIVITY, dsl.ACTIVITY_TYPE_EMBEDDEDFLOW:
 			l.newActivity(activityMeta)
 		}
 	}
@@ -65,6 +65,11 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 		}
 
 		activity := reflect.New(activityType).Interface()
+
+		if activityMeta.Type == dsl.ACTIVITY_TYPE_EMBEDDEDFLOW {
+			//重新构造子节点，主要目的：把父节点端口转换成子流程的开始节点跟结束节点
+			activityMeta = l.refactorChildren(activityMeta)
+		}
 
 		activityValue := reflect.ValueOf(activity)
 		baseActivityValue := reflect.Indirect(activityValue).FieldByName("BaseActivity")
@@ -200,4 +205,51 @@ func (l *LogicFlow) getActivityById(id string) *BaseActivity[any] {
 	}
 
 	return nil
+}
+
+//重新构造children，添加边界节点，修改连线
+func (l *LogicFlow) refactorChildren(parentMeta dsl.ActivityDefine) dsl.ActivityDefine {
+	//对象被复制
+	newMeta := parentMeta
+
+	//清空连线，连线需要重新被构建，节点只是新增，可以保留旧的
+	newMeta.Children.Lines = []dsl.LineDefine{}
+
+	//父节点的input创建为start, portId=>start 节点 id
+	for _, input := range parentMeta.InPorts {
+		newMeta.Children.Nodes = append(newMeta.Children.Nodes, dsl.ActivityDefine{
+			Id:           input.Id,
+			Type:         dsl.ACTIVITY_TYPE_START,
+			ActivityName: "start",
+			Name:         input.Name,
+		})
+	}
+
+	//父节点的output创建为end, portId=>end 节点 id
+	for _, output := range parentMeta.OutPorts {
+		newMeta.Children.Nodes = append(newMeta.Children.Nodes, dsl.ActivityDefine{
+			Id:           output.Id,
+			Type:         dsl.ACTIVITY_TYPE_END,
+			ActivityName: "end",
+			Name:         output.Name,
+		})
+	}
+
+	for _, line := range parentMeta.Children.Lines {
+		//复制连线
+		newLine := line
+		//起点是父节点输入端口， 连接到新创建的开始节点
+		if line.Source.NodeId == parentMeta.Id && line.Source.PortId != "" {
+			newLine.Source.NodeId = line.Source.PortId
+			newLine.Source.PortId = ""
+		}
+		//终点是父节点输入端口, 连接到新创建的结束节点
+		if line.Target.NodeId == parentMeta.Id && line.Target.PortId != "" {
+			newLine.Target.NodeId = line.Target.PortId
+			newLine.Target.PortId = ""
+		}
+		newMeta.Children.Lines = append(newMeta.Children.Lines, newLine)
+	}
+
+	return newMeta
 }

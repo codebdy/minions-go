@@ -5,4 +5,5 @@ const (
 	ACTIVITY_TYPE_END               = "End"
 	ACTIVITY_TYPE_ACTIVITY          = "Activity"
 	ACTIVITY_TYPE_LOGICFLOWACTIVITY = "LogicFlowActivity"
+	ACTIVITY_TYPE_EMBEDDEDFLOW      = "EmbeddedFlow"
 )
