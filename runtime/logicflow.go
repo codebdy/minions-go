@@ -136,6 +136,7 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 							m.Call(inputs)
 						})
 					} else {
+						//可能需要删掉，因为子编排没有处理方法，或者根据节点类型判断一下
 						panic("Can not find input handler:" + input.Name)
 					}
 				}
