@@ -30,6 +30,20 @@ func (j *ActivityJointers) GetInput(name string) *Jointer {
 	return nil
 }
 
+func (j *ActivityJointers) GetSingleInput() *Jointer {
+	if len(j.inputs) > 0 {
+		return j.inputs[0]
+	}
+	return nil
+}
+
+func (j *ActivityJointers) GetSingleOutput() *Jointer {
+	if len(j.outputs) > 0 {
+		return j.outputs[0]
+	}
+	return nil
+}
+
 func (j *ActivityJointers) GetOutputById(id string) *Jointer {
 	for _, jointer := range j.outputs {
 		if jointer.Id == id {

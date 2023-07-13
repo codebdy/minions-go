@@ -33,14 +33,14 @@ func (s SubLogicFlowActivity) Init(meta *dsl.ActivityDefine) {
 	}
 }
 
-func (s SubLogicFlowActivity) GetFlowMeta() *dsl.LogicFlowDefine {
+func (s SubLogicFlowActivity) GetFlowMeta() *dsl.LogicFlowMeta {
 	metas := (&s.BaseActivity).Ctx.Value(minions.CONTEXT_KEY_SUBMETAS)
 	if metas != nil {
-		logicFlowMetas := metas.(*[]dsl.LogicFlowDefine)
+		logicFlowMetas := metas.(*[]dsl.SubLogicFlowMeta)
 		for i := range *logicFlowMetas {
 			flowMeta := (*logicFlowMetas)[i]
 			if flowMeta.Id == s.BaseActivity.GetConfig().subLogicFlowId {
-				return &flowMeta
+				return &flowMeta.LogicFlowMeta
 			}
 		}
 	}

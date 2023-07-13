@@ -1,9 +1,5 @@
 package dsl
 
-type LogicFlowMetas struct {
-	Nodes []ActivityDefine `json:"nodes"`
-	Lines []LineDefine     `json:"lines"`
-}
 
 type ActivityDefine struct {
 	Id           string                 `json:"id"`
@@ -14,5 +10,5 @@ type ActivityDefine struct {
 	Config       map[string]interface{} `json:"config"`
 	InPorts      []PortDefine           `json:"inPorts"`
 	OutPorts     []PortDefine           `json:"outPorts"`
-	Children     LogicFlowMetas         `json:"children"`
+	Children     LogicFlowMeta          `json:"children"`
 }

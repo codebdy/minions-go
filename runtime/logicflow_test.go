@@ -31,10 +31,7 @@ func (t TestActivity) Init() {
 }
 
 func TestNewLogicflow(t *testing.T) {
-	logicFlowMetas := dsl.LogicFlowDefine{
-		Id:    "test1",
-		Name:  "Test 1",
-		Label: "测试",
+	logicFlowMetas := dsl.LogicFlowMeta{
 		Nodes: []dsl.ActivityDefine{
 			{
 				Id:           "start_id_1",
