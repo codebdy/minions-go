@@ -11,7 +11,7 @@ type LoopConfig struct {
 	Times     int  `json:"times"`
 }
 type LoopActivity struct {
-	BaseActivity runtime.BaseActivity
+	Activity runtime.Activity[LoopConfig]
 }
 
 const LOOP_PORT_OUTPUT = "output"
@@ -25,7 +25,7 @@ func init() {
 }
 
 func (l LoopActivity) Input(inputValue any) {
-	config := l.GetConfig()
+	config := l.Activity.GetConfig()
 	if config.FromInput {
 		if inputValue == nil {
 			fmt.Println("Loop input is nil")
@@ -39,13 +39,9 @@ func (l LoopActivity) Input(inputValue any) {
 			l.Output(i)
 		}
 	}
-	l.BaseActivity.Next(inputValue, LOOP_PORT_FINISHED)
+	l.Activity.Next(inputValue, LOOP_PORT_FINISHED)
 }
 
 func (l LoopActivity) Output(value any) {
-	l.BaseActivity.Next(value, LOOP_PORT_OUTPUT)
-}
-
-func (l LoopActivity) GetConfig() LoopConfig {
-	return runtime.GetActivityConfig[LoopConfig](&l.BaseActivity)
+	l.Activity.Next(value, LOOP_PORT_OUTPUT)
 }

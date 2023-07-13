@@ -78,7 +78,11 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 		}
 
 		activityValue := reflect.ValueOf(activity)
-		baseActivityValue := reflect.Indirect(activityValue).FieldByName("BaseActivity")
+		parentActivityValue := reflect.Indirect(activityValue).FieldByName("Activity")
+		if !parentActivityValue.IsValid() {
+			panic("Activity has not parent Activity")
+		}
+		baseActivityValue := reflect.Indirect(parentActivityValue).FieldByName("BaseActivity")
 		if baseActivityValue.IsValid() {
 			v := baseActivityValue.Addr().Interface().(*BaseActivity)
 			v.Init(&activityMeta, l.ctx)

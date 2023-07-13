@@ -69,6 +69,11 @@ type BaseActivity struct {
 	Ctx      context.Context
 }
 
+//为了处理Config添加的一层，这个在反射时不能被显式类型转换
+type Activity[Config any] struct {
+	BaseActivity BaseActivity
+}
+
 // type Activity[Config any] interface {
 // 	GetBaseActivity() *BaseActivity[Config]
 // }
@@ -96,11 +101,15 @@ func (b *BaseActivity) Next(inputValue interface{}, outputName string) {
 	}
 }
 
-func GetActivityConfig[Config any](b *BaseActivity) Config {
+func (a *Activity[Config]) GetConfig() Config {
 	var config Config
 
-	if b.Meta.Config != nil {
-		mapstructure.Decode(b.Meta.Config, &config)
+	if a.BaseActivity.Meta.Config != nil {
+		mapstructure.Decode(a.BaseActivity.Meta.Config, &config)
 	}
 	return config
+}
+
+func (a *Activity[Config]) Next(inputValue interface{}, outputName string) {
+	a.BaseActivity.Next(inputValue, outputName)
 }
