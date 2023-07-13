@@ -1,6 +1,7 @@
 package activites
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/codebdy/minions-go/runtime"
@@ -21,7 +22,7 @@ func init() {
 	)
 }
 
-func (d DebugActivity) Input(inputValue any) {
+func (d DebugActivity) Input(inputValue any, ctx context.Context) {
 	config := d.BaseActivity.GetConfig()
 	if !config.Closed {
 		tip := "Debug"

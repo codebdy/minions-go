@@ -22,7 +22,7 @@ func init() {
 }
 
 //该方法如果存在，会通过反射被自动调用
-func (s SubLogicFlowActivity) Init() {
+func (s SubLogicFlowActivity) Init(meta *dsl.ActivityDefine) {
 	metas := (&s.BaseActivity).Ctx.Value(minions.CONTEXT_KEY_SUBMETAS)
 	if metas != nil {
 		flowMeta := s.GetFlowMeta()
@@ -36,9 +36,9 @@ func (s SubLogicFlowActivity) Init() {
 func (s SubLogicFlowActivity) GetFlowMeta() *dsl.LogicFlowDefine {
 	metas := (&s.BaseActivity).Ctx.Value(minions.CONTEXT_KEY_SUBMETAS)
 	if metas != nil {
-		logicFlowMetas := metas.([]dsl.LogicFlowDefine)
-		for i := range logicFlowMetas {
-			flowMeta := logicFlowMetas[i]
+		logicFlowMetas := metas.(*[]dsl.LogicFlowDefine)
+		for i := range *logicFlowMetas {
+			flowMeta := (*logicFlowMetas)[i]
 			if flowMeta.Id == s.BaseActivity.GetConfig().subLogicFlowId {
 				return &flowMeta
 			}

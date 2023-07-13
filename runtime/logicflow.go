@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/codebdy/minions-go"
 	"github.com/codebdy/minions-go/dsl"
 )
 
@@ -14,9 +15,15 @@ type LogicFlow struct {
 	flowMeta *dsl.LogicFlowDefine
 	//存Activity 指针
 	baseActivites []*BaseActivity[any]
-	ctx           context.Context
+
+	ctx context.Context
 }
 
+func AttachSubFlowsToContext(flowMetas *[]dsl.LogicFlowDefine, ctx context.Context) context.Context {
+	return context.WithValue(ctx, minions.CONTEXT_KEY_SUBMETAS, flowMetas)
+}
+
+// ctx用于传递value，minions.CONTEXT_KEY_SUBMETAS 对应*[]dsl.LogicFlowDefine， 子编排metas
 func NewLogicflow(flowMeta dsl.LogicFlowDefine, ctx context.Context) *LogicFlow {
 	var logicFlow LogicFlow
 	logicFlow.Id = flowMeta.Id
