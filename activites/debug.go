@@ -3,6 +3,7 @@ package activites
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	"github.com/codebdy/minions-go/runtime"
 )
@@ -32,7 +33,11 @@ func (d DebugActivity) Input(inputValue any, ctx context.Context) {
 		}
 		text := ""
 		if inputValue != nil {
-			text = inputValue.(string)
+			if reflect.TypeOf(inputValue).Kind() == reflect.String {
+				text = inputValue.(string)
+			} else {
+				text = "input is not string"
+			}
 		}
 		fmt.Print("🪲" + tip + ":" + text)
 	}

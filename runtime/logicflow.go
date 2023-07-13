@@ -2,7 +2,6 @@ package runtime
 
 import (
 	"context"
-	"fmt"
 	"reflect"
 	"strings"
 
@@ -99,12 +98,9 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 			//调用具体活动的初始化
 			m := activityValue.MethodByName("Init")
 			if m.IsValid() {
-				fmt.Println("找到初始化方法")
 				mt := m.Type()
 				inputs := make([]reflect.Value, mt.NumIn())
 				m.Call(inputs)
-			} else {
-				fmt.Println("没找到初始化方法", activityValue.String())
 			}
 
 			for i := range v.Jointers.inputs {
