@@ -5,7 +5,6 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/codebdy/minions-go"
 	"github.com/codebdy/minions-go/dsl"
 )
 
@@ -14,13 +13,13 @@ type LogicFlow struct {
 	Jointers *ActivityJointers
 	flowMeta *dsl.LogicFlowMeta
 	//存Activity 指针
-	baseActivites []*BaseActivity[any]
+	baseActivites []*BaseActivity
 
 	ctx context.Context
 }
 
 func AttachSubFlowsToContext(flowMetas *[]dsl.SubLogicFlowMeta, ctx context.Context) context.Context {
-	return context.WithValue(ctx, minions.CONTEXT_KEY_SUBMETAS, flowMetas)
+	return context.WithValue(ctx, CONTEXT_KEY_SUBMETAS, flowMetas)
 }
 
 // ctx用于传递value，minions.CONTEXT_KEY_SUBMETAS 对应*[]dsl.LogicFlowDefine， 子编排metas
@@ -81,7 +80,7 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 		activityValue := reflect.ValueOf(activity)
 		baseActivityValue := reflect.Indirect(activityValue).FieldByName("BaseActivity")
 		if baseActivityValue.IsValid() {
-			v := baseActivityValue.Addr().Interface().(*BaseActivity[any])
+			v := baseActivityValue.Addr().Interface().(*BaseActivity)
 			v.Init(&activityMeta, l.ctx)
 			//构造Jointers
 			for _, out := range activityMeta.OutPorts {
@@ -204,7 +203,7 @@ func (l *LogicFlow) getSourceJointerByPortRef(portRef dsl.PortRef) *Jointer {
 	return nil
 }
 
-func (l *LogicFlow) getActivityById(id string) *BaseActivity[any] {
+func (l *LogicFlow) getActivityById(id string) *BaseActivity {
 	for i := range l.baseActivites {
 		activity := l.baseActivites[i]
 		if activity.Id == id {

@@ -11,7 +11,7 @@ type CustomizedLoopConfig struct {
 	Times     int  `json:"times"`
 }
 type CustomizedLoopActivity struct {
-	BaseActivity runtime.BaseActivity[CustomizedLoopConfig]
+	BaseActivity runtime.BaseActivity
 }
 
 const CUSTOMIZED_LOOP_PORT_OUTPUT = "output"
@@ -25,7 +25,8 @@ func init() {
 }
 
 func (l CustomizedLoopActivity) Input(inputValue any) {
-	if l.BaseActivity.GetConfig().FromInput {
+	config := l.GetConfig()
+	if config.FromInput {
 		if inputValue == nil {
 			fmt.Println("CustomizedLoop input is nil")
 		} else {
@@ -33,8 +34,8 @@ func (l CustomizedLoopActivity) Input(inputValue any) {
 				l.Output(one)
 			}
 		}
-	} else if l.BaseActivity.GetConfig().Times > 0 {
-		for i := 0; i < l.BaseActivity.GetConfig().Times; i++ {
+	} else if config.Times > 0 {
+		for i := 0; i < config.Times; i++ {
 			l.Output(i)
 		}
 	}
@@ -43,4 +44,8 @@ func (l CustomizedLoopActivity) Input(inputValue any) {
 
 func (l CustomizedLoopActivity) Output(value any) {
 	l.BaseActivity.Next(value, CUSTOMIZED_LOOP_PORT_OUTPUT)
+}
+
+func (l CustomizedLoopActivity) GetConfig() CustomizedLoopConfig {
+	return runtime.GetActivityConfig[CustomizedLoopConfig](&l.BaseActivity)
 }

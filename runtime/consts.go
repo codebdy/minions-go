@@ -1,3 +1,3 @@
-package minions
+package runtime
 
 const CONTEXT_KEY_SUBMETAS = "submetas"

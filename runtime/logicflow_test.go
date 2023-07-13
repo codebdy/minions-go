@@ -12,7 +12,7 @@ var testInputValue any
 var inited bool
 
 type TestActivity struct {
-	BaseActivity BaseActivity[any]
+	BaseActivity BaseActivity
 }
 
 func init() {

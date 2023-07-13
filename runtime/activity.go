@@ -62,7 +62,7 @@ func (j *ActivityJointers) GetInputById(id string) *Jointer {
 	return nil
 }
 
-type BaseActivity[Config any] struct {
+type BaseActivity struct {
 	Id       string
 	Jointers *ActivityJointers
 	Meta     *dsl.ActivityDefine
@@ -79,14 +79,14 @@ type BaseActivity[Config any] struct {
 // 	return &activity
 // }
 
-func (b *BaseActivity[T]) Init(meta *dsl.ActivityDefine, ctx context.Context) {
+func (b *BaseActivity) Init(meta *dsl.ActivityDefine, ctx context.Context) {
 	b.Meta = meta
 	b.Id = meta.Id
 	b.Jointers = &ActivityJointers{}
 	b.Ctx = ctx
 }
 
-func (b *BaseActivity[Config]) Next(inputValue interface{}, outputName string) {
+func (b *BaseActivity) Next(inputValue interface{}, outputName string) {
 	if outputName == "" {
 		outputName = "output"
 	}
@@ -96,7 +96,7 @@ func (b *BaseActivity[Config]) Next(inputValue interface{}, outputName string) {
 	}
 }
 
-func (b *BaseActivity[Config]) GetConfig() Config {
+func GetActivityConfig[Config any](b *BaseActivity) Config {
 	var config Config
 
 	if b.Meta.Config != nil {

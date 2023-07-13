@@ -7,7 +7,7 @@ type ConditionConfig struct {
 }
 
 type ConditionActivity struct {
-	BaseActivity runtime.BaseActivity[ConditionConfig]
+	BaseActivity runtime.BaseActivity
 }
 
 func (c ConditionActivity) Input(inputValue interface{}) {

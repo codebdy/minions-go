@@ -12,7 +12,7 @@ type DebugConfig struct {
 	Closed bool   `json:"closed"`
 }
 type DebugActivity struct {
-	BaseActivity runtime.BaseActivity[DebugConfig]
+	BaseActivity runtime.BaseActivity
 }
 
 func init() {
@@ -23,7 +23,7 @@ func init() {
 }
 
 func (d DebugActivity) Input(inputValue any, ctx context.Context) {
-	config := d.BaseActivity.GetConfig()
+	config := d.GetConfig()
 	if !config.Closed {
 		tip := "Debug"
 		if config.Tip != "" {
@@ -35,4 +35,8 @@ func (d DebugActivity) Input(inputValue any, ctx context.Context) {
 		}
 		fmt.Print("🪲" + tip + ":" + text)
 	}
+}
+
+func (l DebugActivity) GetConfig() DebugConfig {
+	return runtime.GetActivityConfig[DebugConfig](&l.BaseActivity)
 }
