@@ -36,7 +36,7 @@ func (d DebugActivity) Input(inputValue any, ctx context.Context) {
 			if reflect.TypeOf(inputValue).Kind() == reflect.String {
 				text = inputValue.(string)
 			} else {
-				text = "input is not string"
+				text = "input is not type:" + reflect.TypeOf(inputValue).String()
 			}
 		}
 		fmt.Print("🪲" + tip + ":" + text)
