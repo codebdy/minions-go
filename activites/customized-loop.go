@@ -19,7 +19,7 @@ const CUSTOMIZED_LOOP_PORT_FINISHED = "finished"
 
 func init() {
 	runtime.RegisterActivity(
-		"debug",
+		"customizedLoop",
 		CustomizedLoopActivity{},
 	)
 }

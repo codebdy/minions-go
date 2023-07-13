@@ -19,7 +19,7 @@ const LOOP_PORT_FINISHED = "finished"
 
 func init() {
 	runtime.RegisterActivity(
-		"debug",
+		"loop",
 		LoopActivity{},
 	)
 }

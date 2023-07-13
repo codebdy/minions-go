@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"context"
+	"fmt"
 	"reflect"
 	"strings"
 
@@ -74,7 +75,7 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 
 		if activityMeta.Type == dsl.ACTIVITY_TYPE_EMBEDDEDFLOW {
 			//重新构造子节点，主要目的：把父节点端口转换成子流程的开始节点跟结束节点
-			activityMeta = l.refactorChildren(activityMeta)
+			activityMeta = refactorChildren(activityMeta)
 		}
 
 		activityValue := reflect.ValueOf(activity)
@@ -98,9 +99,12 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 			//调用具体活动的初始化
 			m := activityValue.MethodByName("Init")
 			if m.IsValid() {
+				fmt.Println("找到初始化方法")
 				mt := m.Type()
 				inputs := make([]reflect.Value, mt.NumIn())
 				m.Call(inputs)
+			} else {
+				fmt.Println("没找到初始化方法", activityValue.String())
 			}
 
 			for i := range v.Jointers.inputs {
@@ -219,7 +223,7 @@ func (l *LogicFlow) getActivityById(id string) *BaseActivity {
 }
 
 //重新构造children，添加边界节点，修改连线
-func (l *LogicFlow) refactorChildren(parentMeta dsl.ActivityDefine) dsl.ActivityDefine {
+func refactorChildren(parentMeta dsl.ActivityDefine) dsl.ActivityDefine {
 	//对象被复制
 	newMeta := parentMeta
 

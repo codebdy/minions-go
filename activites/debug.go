@@ -16,6 +16,7 @@ type DebugActivity struct {
 }
 
 func init() {
+
 	runtime.RegisterActivity(
 		"debug",
 		DebugActivity{},
