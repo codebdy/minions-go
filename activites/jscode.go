@@ -40,13 +40,12 @@ func (j *JsCodeActivity) DynamicInput(name string, inputValue any, ctx context.C
 		}
 		vm := goja.New()
 		vm.SetFieldNameMapper(goja.UncapFieldNameMapper())
-		_, err := vm.RunString("const codeFunc = " + config.Expression)
-		if err != nil {
-			panic(err)
-		}
-
-		var codeFunc func(map[string]any, map[string]PortFunc, context.Context)
-		err = vm.ExportTo(vm.Get("codeFunc"), &codeFunc)
+		fnStr := "const codeFunc = " + config.Expression + `
+		  function callFunc() {
+				codeFunc(inputs, outputs, context)
+			}
+		`
+		_, err := vm.RunString(fnStr)
 		if err != nil {
 			panic(err)
 		}
@@ -55,11 +54,24 @@ func (j *JsCodeActivity) DynamicInput(name string, inputValue any, ctx context.C
 
 		for _, output := range j.Activity.BaseActivity.Meta.OutPorts {
 			outputHandlers[output.Name] = func(inputValue any, ctx context.Context) {
+				if ctx == nil {
+					ctx = context.Background()
+				}
 				j.Activity.Next(inputValue, output.Name, ctx)
 			}
 		}
 
-		codeFunc(j.values, outputHandlers, ctx)
+		vm.Set("inputs", j.values)
+		vm.Set("outputs", outputHandlers)
+		vm.Set("context", ctx)
+
+		var callFunc func()
+		err = vm.ExportTo(vm.Get("callFunc"), &callFunc)
+		if err != nil {
+			panic(err)
+		}
+
+		callFunc()
 		j.inputCount = 0
 	}
 
