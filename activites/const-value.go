@@ -22,5 +22,5 @@ func init() {
 
 func (d ConstValueActivity) Input(inputValue any, ctx context.Context) {
 	config := d.Activity.GetConfig()
-	d.Activity.Output(config.Value)
+	d.Activity.Output(config.Value, ctx)
 }
