@@ -110,6 +110,10 @@ func (a *Activity[Config]) GetConfig() Config {
 	return config
 }
 
-func (a *Activity[Config]) Next(inputValue interface{}, outputName string) {
+func (a *Activity[Config]) Next(inputValue any, outputName string) {
 	a.BaseActivity.Next(inputValue, outputName)
+}
+
+func (a *Activity[Config]) Output(inputValue any) {
+	a.BaseActivity.Next(inputValue, "output")
 }

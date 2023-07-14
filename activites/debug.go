@@ -17,7 +17,6 @@ type DebugActivity struct {
 }
 
 func init() {
-
 	runtime.RegisterActivity(
 		"debug",
 		DebugActivity{},
@@ -36,7 +35,7 @@ func (d DebugActivity) Input(inputValue any, ctx context.Context) {
 			if reflect.TypeOf(inputValue).Kind() == reflect.String {
 				text = inputValue.(string)
 			} else {
-				text = "input is not type:" + reflect.TypeOf(inputValue).String()
+				text = "input is type:" + reflect.TypeOf(inputValue).String()
 			}
 		}
 		fmt.Print("🪲" + tip + ":" + text)
