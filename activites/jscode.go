@@ -26,7 +26,11 @@ func init() {
 
 type PortFunc = func(inputValue any, ctx context.Context)
 
-func (j JsCodeActivity) DynamicInput(name string, inputValue any, ctx context.Context) {
+func (j *JsCodeActivity) Init() {
+	j.values = map[string]any{}
+}
+
+func (j *JsCodeActivity) DynamicInput(name string, inputValue any, ctx context.Context) {
 	j.values[name] = inputValue
 	j.inputCount++
 	if len(j.Activity.BaseActivity.Meta.InPorts) == j.inputCount {

@@ -21,7 +21,7 @@ func init() {
 	)
 }
 
-func (r ContextReadActivity) Input(inputValue any, ctx context.Context) {
+func (r *ContextReadActivity) Input(inputValue any, ctx context.Context) {
 	config := r.Activity.GetConfig()
 	r.Activity.Output(ctx.Value(config.Name), ctx)
 }

@@ -18,7 +18,7 @@ func init() {
 	)
 }
 
-func (s SplitArrayActivity) Input(inputValue any, ctx context.Context) {
+func (s *SplitArrayActivity) Input(inputValue any, ctx context.Context) {
 	if inputValue != nil {
 		valueArray, ok := inputValue.([]any)
 		if !ok {

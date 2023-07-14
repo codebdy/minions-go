@@ -23,7 +23,7 @@ func init() {
 	)
 }
 
-func (d DebugActivity) Input(inputValue any, ctx context.Context) {
+func (d *DebugActivity) Input(inputValue any, ctx context.Context) {
 	config := d.Activity.GetConfig()
 	if !config.Closed {
 		tip := "Debug"
@@ -38,6 +38,6 @@ func (d DebugActivity) Input(inputValue any, ctx context.Context) {
 				text = "input is type:" + reflect.TypeOf(inputValue).String()
 			}
 		}
-		fmt.Print("🪲" + tip + ":" + text)
+		fmt.Println("🪲" + tip + ":" + text)
 	}
 }

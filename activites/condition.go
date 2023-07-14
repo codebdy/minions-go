@@ -22,7 +22,7 @@ func init() {
 	)
 }
 
-func (c ConditionActivity) Input(inputValue interface{}, ctx context.Context) {
+func (c *ConditionActivity) Input(inputValue interface{}, ctx context.Context) {
 	config := c.Activity.GetConfig()
 	if inputValue != nil && config.TrueExpression == "" {
 		c.Activity.Output(inputValue, ctx)

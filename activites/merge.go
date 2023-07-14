@@ -19,11 +19,15 @@ func init() {
 	)
 }
 
-func (s MergeActivity) DynamicInput(name string, inputValue any, ctx context.Context) {
-	s.values[name] = inputValue
-	s.inputCount++
-	if len(s.Activity.BaseActivity.Meta.InPorts) == s.inputCount {
-		s.Activity.Output(s.values, ctx)
-		s.inputCount = 0
+func (m *MergeActivity) Init() {
+	m.values = map[string]any{}
+}
+
+func (m *MergeActivity) DynamicInput(name string, inputValue any, ctx context.Context) {
+	m.values[name] = inputValue
+	m.inputCount++
+	if len(m.Activity.BaseActivity.Meta.InPorts) == m.inputCount {
+		m.Activity.Output(m.values, ctx)
+		m.inputCount = 0
 	}
 }

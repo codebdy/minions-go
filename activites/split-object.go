@@ -22,7 +22,7 @@ func init() {
 	)
 }
 
-func (s SplitObjectActivity) Input(inputValue any, ctx context.Context) {
+func (s *SplitObjectActivity) Input(inputValue any, ctx context.Context) {
 	if inputValue != nil {
 		valueMap := inputValue.(map[string]any)
 

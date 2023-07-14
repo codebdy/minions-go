@@ -16,12 +16,12 @@ type ContextWriteActivity struct {
 
 func init() {
 	runtime.RegisterActivity(
-		"debug",
+		"contextWrite",
 		DebugActivity{},
 	)
 }
 
-func (r ContextWriteActivity) Input(inputValue any, ctx context.Context) {
-	config := r.Activity.GetConfig()
-	r.Activity.Output(inputValue, context.WithValue(ctx, config.Name, inputValue))
+func (w *ContextWriteActivity) Input(inputValue any, ctx context.Context) {
+	config := w.Activity.GetConfig()
+	w.Activity.Output(inputValue, context.WithValue(ctx, config.Name, inputValue))
 }

@@ -2,6 +2,7 @@ package runtime
 
 import (
 	"context"
+	"fmt"
 	"reflect"
 	"strings"
 
@@ -119,7 +120,12 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 						inputs := make([]reflect.Value, mt.NumIn())
 
 						if mt.NumIn() > 0 {
-							inputs[0] = reflect.ValueOf(inputValue)
+							if inputValue == nil {
+								//防止nil参数异常：Call using zero Value argument
+								inputs[0] = reflect.ValueOf((*string)(nil))
+							} else {
+								inputs[0] = reflect.ValueOf(inputValue)
+							}
 						}
 						if mt.NumIn() > 1 {
 							inputs[1] = reflect.ValueOf(ctx)
@@ -138,7 +144,13 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 							}
 							inputs[0] = reflect.ValueOf(input.Name)
 							if mt.NumIn() > 1 {
-								inputs[1] = reflect.ValueOf(inputValue)
+								if inputValue == nil {
+									//防止nil参数异常：Call using zero Value argument
+									inputs[1] = reflect.ValueOf((*string)(nil))
+								} else {
+									inputs[1] = reflect.ValueOf(inputValue)
+								}
+								inputs[1] = reflect.ValueOf((any)("inputValue"))
 							}
 							if mt.NumIn() > 2 {
 								inputs[2] = reflect.ValueOf(ctx)

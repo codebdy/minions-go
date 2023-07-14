@@ -25,7 +25,7 @@ func init() {
 	)
 }
 
-func (l CustomizedLoopActivity) Input(inputValue any, ctx context.Context) {
+func (l *CustomizedLoopActivity) Input(inputValue any, ctx context.Context) {
 	config := l.Activity.GetConfig()
 	if config.FromInput {
 		if inputValue == nil {
@@ -43,6 +43,6 @@ func (l CustomizedLoopActivity) Input(inputValue any, ctx context.Context) {
 	l.Activity.Next(inputValue, CUSTOMIZED_LOOP_PORT_FINISHED, ctx)
 }
 
-func (l CustomizedLoopActivity) Output(value any, ctx context.Context) {
+func (l *CustomizedLoopActivity) Output(value any, ctx context.Context) {
 	l.Activity.Next(value, CUSTOMIZED_LOOP_PORT_OUTPUT, ctx)
 }
