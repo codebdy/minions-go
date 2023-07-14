@@ -8,6 +8,11 @@ import (
 	"github.com/codebdy/minions-go/runtime"
 )
 
+//注册元件
+func RegisterActivity(name string, activity interface{}) {
+	runtime.RegisterActivity(name, activity)
+}
+
 func AttachSubFlowsToContext(flowMetas *[]dsl.SubLogicFlowMeta, ctx context.Context) context.Context {
 	return runtime.AttachSubFlowsToContext(flowMetas, ctx)
 }
