@@ -149,7 +149,6 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 								} else {
 									inputs[1] = reflect.ValueOf(inputValue)
 								}
-								inputs[1] = reflect.ValueOf((any)("inputValue"))
 							}
 							if mt.NumIn() > 2 {
 								inputs[2] = reflect.ValueOf(ctx)
