@@ -154,8 +154,8 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 							}
 							m.Call(inputs)
 						})
+						//如果不是子流程，必须要定义端口处理函数
 					} else if activityMeta.Type != dsl.ACTIVITY_TYPE_LOGICFLOWACTIVITY {
-						//可能需要删掉，因为子编排没有处理方法，或者根据节点类型判断一下
 						panic("Can not find input handler:" + input.Name)
 					}
 				}
