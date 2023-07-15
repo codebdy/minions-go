@@ -98,8 +98,7 @@ func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
 			//调用具体活动的初始化
 			m := activityValue.MethodByName("Init")
 			if m.IsValid() {
-				mt := m.Type()
-				inputs := make([]reflect.Value, mt.NumIn())
+				inputs := make([]reflect.Value, 0)
 				m.Call(inputs)
 			}
 
@@ -190,7 +189,7 @@ func (l *LogicFlow) contructLines() {
 		//先判断是否连接本编排的output
 		targetJointer := l.Jointers.GetOutputById(lineMeta.Target.NodeId)
 
-		//如果不是，连接Targe activity的Input
+		//如果不是，连接Target activity的Input
 		if targetJointer == nil && lineMeta.Target.PortId != "" {
 			targetJointer = l.geTargetJointerByPortRef(lineMeta.Target)
 		}

@@ -5,8 +5,12 @@ import (
 	"github.com/codebdy/minions-go/runtime"
 )
 
+type LogicFlowConfigParam struct {
+	LogicFlowId string `json:"logicFlowId"`
+}
+
 type SubLogicFlowConfig struct {
-	subLogicFlowId string
+	Param LogicFlowConfigParam `json:"param"`
 }
 
 type SubLogicFlowActivity struct {
@@ -21,7 +25,7 @@ func init() {
 }
 
 //该方法如果存在，会通过反射被自动调用
-func (s *SubLogicFlowActivity) Init(meta *dsl.ActivityDefine) {
+func (s *SubLogicFlowActivity) Init() {
 	metas := (&s.Activity).BaseActivity.Ctx.Value(runtime.CONTEXT_KEY_SUBMETAS)
 	if metas != nil {
 		flowMeta := s.GetFlowMeta()
@@ -38,7 +42,7 @@ func (s *SubLogicFlowActivity) GetFlowMeta() *dsl.LogicFlowMeta {
 		logicFlowMetas := metas.(*[]dsl.SubLogicFlowMeta)
 		for i := range *logicFlowMetas {
 			flowMeta := (*logicFlowMetas)[i]
-			if flowMeta.Id == s.Activity.GetConfig().subLogicFlowId {
+			if flowMeta.Id == s.Activity.GetConfig().Param.LogicFlowId {
 				return &flowMeta.LogicFlowMeta
 			}
 		}
