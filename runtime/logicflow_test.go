@@ -32,7 +32,7 @@ func (t TestActivity) Init() {
 
 func TestNewLogicflow(t *testing.T) {
 	logicFlowMetas := dsl.LogicFlowMeta{
-		Nodes: []dsl.ActivityDefine{
+		Nodes: []dsl.NodeDefine{
 			{
 				Id:           "start_id_1",
 				ActivityName: "input1",

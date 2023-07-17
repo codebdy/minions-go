@@ -65,7 +65,7 @@ func (j *ActivityJointers) GetInputById(id string) *Jointer {
 type BaseActivity struct {
 	Id       string
 	Jointers *ActivityJointers
-	Meta     *dsl.ActivityDefine
+	Meta     *dsl.NodeDefine
 	Ctx      context.Context
 }
 
@@ -78,13 +78,13 @@ type Activity[Config any] struct {
 // 	GetBaseActivity() *BaseActivity[Config]
 // }
 
-// func NewActivity[Config any, T Activity[Config]](meta *dsl.ActivityDefine) *T {
+// func NewActivity[Config any, T Activity[Config]](meta *dsl.NodeDefine) *T {
 // 	var activity T
 // 	activity.GetBaseActivity().Init(meta)
 // 	return &activity
 // }
 
-func (b *BaseActivity) Init(meta *dsl.ActivityDefine, ctx context.Context) {
+func (b *BaseActivity) Init(meta *dsl.NodeDefine, ctx context.Context) {
 	b.Meta = meta
 	b.Id = meta.Id
 	b.Jointers = &ActivityJointers{}

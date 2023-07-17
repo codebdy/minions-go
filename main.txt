@@ -28,7 +28,7 @@ func main() {
 		Id:    "test1",
 		Name:  "Test 1",
 		Label: "测试",
-		Nodes: []dsl.ActivityDefine{
+		Nodes: []dsl.NodeDefine{
 			{
 				Id:           "start_id_1",
 				ActivityName: "input1",

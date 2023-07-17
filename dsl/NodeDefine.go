@@ -1,7 +1,6 @@
 package dsl
 
-
-type ActivityDefine struct {
+type NodeDefine struct {
 	Id           string                 `json:"id"`
 	Name         string                 `json:"name"` //嵌入编排，端口转换成子节点时使用
 	Type         string                 `json:"type"`

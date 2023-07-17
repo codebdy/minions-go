@@ -60,7 +60,7 @@ func (l *LogicFlow) constructActivities() {
 	}
 }
 
-func (l *LogicFlow) newActivity(activityMeta dsl.ActivityDefine) {
+func (l *LogicFlow) newActivity(activityMeta dsl.NodeDefine) {
 	if activityMeta.ActivityName != "" {
 		activityType := activitiesMap[activityMeta.ActivityName]
 		if activityType == nil {
@@ -228,7 +228,7 @@ func (l *LogicFlow) getActivityById(id string) *BaseActivity {
 }
 
 //重新构造children，添加边界节点，修改连线
-func refactorChildren(parentMeta dsl.ActivityDefine) dsl.ActivityDefine {
+func refactorChildren(parentMeta dsl.NodeDefine) dsl.NodeDefine {
 	//对象被复制
 	newMeta := parentMeta
 
@@ -237,7 +237,7 @@ func refactorChildren(parentMeta dsl.ActivityDefine) dsl.ActivityDefine {
 
 	//父节点的input创建为start, portId=>start 节点 id
 	for _, input := range parentMeta.InPorts {
-		newMeta.Children.Nodes = append(newMeta.Children.Nodes, dsl.ActivityDefine{
+		newMeta.Children.Nodes = append(newMeta.Children.Nodes, dsl.NodeDefine{
 			Id:           input.Id,
 			Type:         dsl.ACTIVITY_TYPE_START,
 			ActivityName: "start",
@@ -247,7 +247,7 @@ func refactorChildren(parentMeta dsl.ActivityDefine) dsl.ActivityDefine {
 
 	//父节点的output创建为end, portId=>end 节点 id
 	for _, output := range parentMeta.OutPorts {
-		newMeta.Children.Nodes = append(newMeta.Children.Nodes, dsl.ActivityDefine{
+		newMeta.Children.Nodes = append(newMeta.Children.Nodes, dsl.NodeDefine{
 			Id:           output.Id,
 			Type:         dsl.ACTIVITY_TYPE_END,
 			ActivityName: "end",
