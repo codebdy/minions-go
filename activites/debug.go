@@ -37,10 +37,11 @@ func (d *DebugActivity) Input(inputValue any, ctx context.Context) {
 			} else if reflect.TypeOf(inputValue).Kind() == reflect.Int ||
 				reflect.TypeOf(inputValue).Kind() == reflect.Int16 ||
 				reflect.TypeOf(inputValue).Kind() == reflect.Int32 ||
-				reflect.TypeOf(inputValue).Kind() == reflect.Int64 ||
-				reflect.TypeOf(inputValue).Kind() == reflect.Float32 ||
-				reflect.TypeOf(inputValue).Kind() == reflect.Float64 {
+				reflect.TypeOf(inputValue).Kind() == reflect.Int64 {
 				text = fmt.Sprintf("%d", inputValue)
+			} else if reflect.TypeOf(inputValue).Kind() == reflect.Float32 ||
+				reflect.TypeOf(inputValue).Kind() == reflect.Float64 {
+				text = fmt.Sprintf("%f", inputValue)
 			} else if reflect.TypeOf(inputValue).Kind() == reflect.Bool {
 				if inputValue.(bool) {
 					text = "true"
